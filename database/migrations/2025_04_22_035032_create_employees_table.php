@@ -17,8 +17,8 @@ return new class extends Migration
             $table->text('image')->nullable();
             $table->string('email')->unique();
             $table->string('phone')->nullable();
-            $table->foreignId('department_id')->constrained('departments')->onDelete('set null');
-            $table->foreignId('job_position_id')->constrained('job_positions')->onDelete('set null');
+            $table->foreignId('department_id')->nullable()->constrained('departments')->onDelete('set null');
+            $table->foreignId('job_position_id')->nullable()->constrained('job_positions')->onDelete('set null');
             $table->string('address')->nullable();
             $table->timestamps();
         });
