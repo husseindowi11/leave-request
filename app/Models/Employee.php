@@ -1,0 +1,27 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Employee extends Model
+{
+    protected $fillable = [
+        'name',
+        'email',
+        'phone',
+        'address',
+        'department_id',
+        'job_position_id',
+    ];
+
+    public function department()
+    {
+        return $this->belongsTo(Department::class);
+    }
+
+    public function jobPosition()
+    {
+        return $this->belongsTo(JobPosition::class);
+    }
+}
