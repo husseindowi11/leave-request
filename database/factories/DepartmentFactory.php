@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class DepartmentFactory extends Factory
 {
-    protected static array $departments = [
+    public static array $departments = [
         'Human Resources',
         'Finance',
         'Marketing',
