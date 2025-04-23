@@ -4,9 +4,12 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\EmployeeResource\Pages;
 use App\Filament\Resources\EmployeeResource\RelationManagers;
+use App\Filament\Resources\EmployeeResource\RelationManagers\UserRelationManager;
 use App\Models\Employee;
+use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -21,7 +24,9 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class EmployeeResource extends Resource
 {
-    protected static ?string $model = Employee::class;
+    protected static ?string $model = User::class;
+
+    protected static ?string $label = 'Employee';
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -81,13 +86,13 @@ class EmployeeResource extends Resource
                     ->searchable()
                     ->sortable(),
 
-                ImageColumn::make('image')
-                    ->label('Image'),
-
                 TextColumn::make('email')
                     ->label('Email')
                     ->searchable()
                     ->sortable(),
+
+                ImageColumn::make('image')
+                    ->label('Image'),
 
                 TextColumn::make('phone')
                     ->label('Phone')
@@ -131,7 +136,7 @@ class EmployeeResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+
         ];
     }
 
