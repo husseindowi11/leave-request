@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\LeaveStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -17,4 +18,18 @@ class LeaveRequest extends Model
         'end_date',
         'description',
     ];
+
+    protected $casts = [
+        'status' => LeaveStatus::class,
+    ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function leaveType()
+    {
+        return $this->belongsTo(LeaveType::class);
+    }
 }
