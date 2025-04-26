@@ -8,6 +8,7 @@ use App\Filament\Resources\EmployeeResource\RelationManagers\UserRelationManager
 use App\Models\Employee;
 use App\Models\User;
 use Filament\Forms;
+use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Select;
@@ -64,6 +65,12 @@ class EmployeeResource extends Resource
                     ->label('Address')
                     ->maxLength(255)
                     ->nullable(),
+
+
+                Select::make('roles')
+                    ->relationship('roles', 'name')
+                    ->columns(2)
+                    ->label('Assigned Roles'),
 
                 FileUpload::make('image')
                     ->label('Profile Image')
