@@ -42,19 +42,20 @@ class DatabaseSeeder extends Seeder
             'email' => 'employee@demo.com',
             'password' => bcrypt('password'),
         ]);
-
+        // Create 30 random users
         User::factory()->count(30)->create();
+        // Create 40 random leave requests
+        \App\Models\LeaveRequest::factory()->count(40)->create();
+        // Create permissions
         Artisan::call('shield:install', [
             'panel' => 'admin',
             '--no-interaction' => true,
         ]);
-
         // Generate all Filament permissions/policies for the "admin" panel
         Artisan::call('shield:generate', [
             '--panel' => 'admin',
             '--all'   => true,
         ]);
-
         // Create roles and permissions
         $this->create_employee_role();
         $this->attach_role($employee,'employee');
