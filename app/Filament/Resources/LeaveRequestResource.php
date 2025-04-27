@@ -47,11 +47,16 @@ class LeaveRequestResource extends Resource
 
                 DatePicker::make('start_date')
                     ->label('Start Date')
-                    ->required(),
+                    ->required()
+                    ->rules([
+                        'after_or_equal:today',
+                        'before_or_equal:end_date'
+                    ]),
 
                 DatePicker::make('end_date')
                     ->label('End Date')
-                    ->required(),
+                    ->required()
+                    ->rules(['after_or_equal:start_date']),
 
                 Select::make('status')
                     ->label('Status')
@@ -79,9 +84,9 @@ class LeaveRequestResource extends Resource
                 TextColumn::make('leaveType.name')->label('Leave Type')->sortable()->searchable(),
                 TextColumn::make('status')
                     ->badge()
-                    ->color(fn (LeaveStatus $state): string => match ($state) {
+                    ->color(fn(LeaveStatus $state): string => match ($state) {
                         LeaveStatus::Pending => 'gray',
-                        LeaveStatus::Approved  => 'success',
+                        LeaveStatus::Approved => 'success',
                         LeaveStatus::Rejected => 'danger',
                     }),
                 TextColumn::make('start_date')->label('Start')->date(),
