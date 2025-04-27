@@ -6,6 +6,7 @@ use App\Enums\LeaveStatus;
 use App\Filament\Resources\LeaveRequestResource\Pages;
 use App\Filament\Resources\LeaveRequestResource\RelationManagers;
 use App\Models\LeaveRequest;
+use Carbon\Carbon;
 use Filament\Forms;
 use Filament\Forms\Components\Actions;
 use Filament\Forms\Components\DatePicker;
@@ -53,15 +54,18 @@ class LeaveRequestResource extends Resource
                 DatePicker::make('start_date')
                     ->label('Start Date')
                     ->required()
-                    ->rules([
-                        'after_or_equal:today',
-                        'before_or_equal:end_date'
-                    ]),
+                    ->displayFormat('d/m/Y')
+                    ->format('Y-m-d')
+                    ->minDate(Carbon::today()),
 
                 DatePicker::make('end_date')
                     ->label('End Date')
                     ->required()
-                    ->rules(['after_or_equal:start_date']),
+                    ->displayFormat('d/m/Y')
+                    ->format('Y-m-d')
+                    ->rules([
+                        'after_or_equal:start_date',
+                    ]),
 
                 Textarea::make('description')
                     ->label('Description')
@@ -149,26 +153,6 @@ class LeaveRequestResource extends Resource
                     ->relationship('leaveType', 'name'),
             ])
             ->actions([
-                // “Accept” button
-                Action::make('approve')
-                    ->label('Accept')
-                    ->icon('heroicon-o-check-circle')
-                    ->color('success')
-                    ->action(fn($record) => $record->update(['status' => LeaveStatus::Approved]))
-                    ->visible(fn($record) => $record->status === LeaveStatus::Pending)
-                    ->requiresConfirmation(),
-
-
-                // “Reject” button
-                Action::make('reject')
-                    ->label('Reject')
-                    ->icon('heroicon-o-x-circle')
-                    ->color('danger')
-                    ->action(fn($record) => $record->update(['status' => LeaveStatus::Rejected]))
-                    ->visible(fn($record) => $record->status === LeaveStatus::Pending)
-                    ->requiresConfirmation(),
-
-
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
