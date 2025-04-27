@@ -9,8 +9,10 @@ use App\Models\LeaveRequest;
 use Filament\Forms;
 use Filament\Forms\Components\Actions;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Support\Enums\Alignment;
@@ -19,6 +21,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Filament\Tables\Actions\Action;
+use Filament\Forms\Components\Actions\Action as FormAction;
 
 class LeaveRequestResource extends Resource
 {
@@ -30,6 +33,8 @@ class LeaveRequestResource extends Resource
     {
         return $form
             ->schema([
+
+
                 Select::make('user_id')
                     ->label('User')
                     ->relationship('user', 'name')
@@ -58,20 +63,58 @@ class LeaveRequestResource extends Resource
                     ->required()
                     ->rules(['after_or_equal:start_date']),
 
-                Select::make('status')
-                    ->label('Status')
-                    ->options(
-                        collect(LeaveStatus::cases())->mapWithKeys(fn($case) => [$case->value => ucfirst($case->value)]
-                        )->toArray()
-                    )
-                    ->default(LeaveStatus::Pending->value)
-                    ->required(),
-
                 Textarea::make('description')
                     ->label('Description')
                     ->nullable()
                     ->columnSpan(2)
                     ->rows(3),
+
+
+                Section::make('Status Controls')
+                    ->columns(2)
+                    ->schema([
+                        TextInput::make('status')
+                            ->hiddenLabel()
+                            ->readOnly()
+                            ->columnSpan(1),
+
+                        Actions::make([
+                            FormAction::make('approve')
+                                ->label('Accept')
+                                ->icon('heroicon-o-check-circle')
+                                ->color('success')
+                                ->requiresConfirmation()
+                                ->action(function ($livewire) {
+                                    // update in database
+                                    $livewire->record->update([
+                                        'status' => LeaveStatus::Approved->value,
+                                    ]);
+                                })
+                                ->after(function ($livewire) {
+                                    // re‐load the record and refill the form with its fresh data
+                                    $livewire->record = $livewire->record->refresh();
+                                    $livewire->form->fill($livewire->record->toArray());
+                                }),
+
+                            FormAction::make('reject')
+                                ->label('Reject')
+                                ->icon('heroicon-o-x-circle')
+                                ->color('danger')
+                                ->requiresConfirmation()
+                                ->action(function ($livewire) {
+                                    $livewire->record->update([
+                                        'status' => LeaveStatus::Rejected->value,
+                                    ]);
+                                })
+                                ->after(function ($livewire) {
+                                    $livewire->record = $livewire->record->refresh();
+                                    $livewire->form->fill($livewire->record->toArray());
+                                }),
+                        ])
+                            ->columnSpan(1)
+                            ->alignEnd()
+
+                    ])->visible(fn($record) => $record?->status),
 
             ]);
     }
