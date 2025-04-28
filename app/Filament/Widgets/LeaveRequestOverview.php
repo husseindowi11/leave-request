@@ -5,11 +5,13 @@ namespace App\Filament\Widgets;
 use App\Models\Department;
 use App\Models\LeaveRequest;
 use App\Models\User;
+use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 
 class LeaveRequestOverview extends BaseWidget
 {
+    use HasWidgetShield;
     protected static ?int $sort = 1;
     protected function getStats(): array
     {
