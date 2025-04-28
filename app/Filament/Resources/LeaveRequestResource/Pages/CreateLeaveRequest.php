@@ -9,4 +9,16 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateLeaveRequest extends CreateRecord
 {
     protected static string $resource = LeaveRequestResource::class;
+
+
+    protected function mutateFormDataBeforeCreate(array $data): array
+    {
+        // If it wasn't provided (or the current user isn't admin),
+        // force it to the authenticated user:
+        $data['user_id'] = auth()->user()->hasRole('admin')
+            ? $data['user_id'] ?? null
+            : auth()->id();
+
+        return $data;
+    }
 }

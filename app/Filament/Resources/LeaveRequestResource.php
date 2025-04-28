@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use Filament\Forms;
 use Filament\Forms\Components\Actions;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -40,6 +41,9 @@ class LeaveRequestResource extends Resource
                     ->label('User')
                     ->relationship('user', 'name')
                     ->searchable()
+                    ->visible(
+                        fn($record) => auth()->user()->hasRole('super_admin')
+                    )
                     ->preload()
                     ->required(),
 
@@ -176,6 +180,17 @@ class LeaveRequestResource extends Resource
             'create' => Pages\CreateLeaveRequest::route('/create'),
             'edit' => Pages\EditLeaveRequest::route('/{record}/edit'),
         ];
+    }
+
+    public static function getEloquentQuery(): \Illuminate\Database\Eloquent\Builder
+    {
+        $query = parent::getEloquentQuery();
+
+        if (! auth()->user()->hasRole('admin')) {
+            $query->where('user_id', auth()->id());
+        }
+
+        return $query;
     }
 
 }
