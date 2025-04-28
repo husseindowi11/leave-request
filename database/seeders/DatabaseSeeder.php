@@ -86,6 +86,7 @@ class DatabaseSeeder extends Seeder
             'replicate_leave::request',
             'restore_leave::type',
             'create_role',
+            'widget_EmployeeLeaveRequest',
         ];
         $permissions = Permission::whereIn('name', $permissionNames)->get();
         $role->syncPermissions($permissions);
