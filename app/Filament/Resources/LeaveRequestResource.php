@@ -57,18 +57,13 @@ class LeaveRequestResource extends Resource
                 DatePicker::make('start_date')
                     ->label('Start Date')
                     ->required()
-                    ->displayFormat('d/m/Y')
-                    ->format('Y-m-d')
                     ->minDate(Carbon::today()),
 
                 DatePicker::make('end_date')
                     ->label('End Date')
                     ->required()
-                    ->displayFormat('d/m/Y')
-                    ->format('Y-m-d')
-                    ->rules([
-                        'after_or_equal:start_date',
-                    ]),
+                    ->minDate(Carbon::today())
+                    ->after('start_date'),
 
                 Textarea::make('description')
                     ->label('Description')
