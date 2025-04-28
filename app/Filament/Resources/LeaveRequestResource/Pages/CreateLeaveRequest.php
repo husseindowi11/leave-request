@@ -15,7 +15,7 @@ class CreateLeaveRequest extends CreateRecord
     {
         // If it wasn't provided (or the current user isn't admin),
         // force it to the authenticated user:
-        $data['user_id'] = auth()->user()->hasRole('admin')
+        $data['user_id'] = auth()->user()->hasRole('super_admin')
             ? $data['user_id'] ?? null
             : auth()->id();
 

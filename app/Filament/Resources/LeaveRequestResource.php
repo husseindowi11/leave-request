@@ -54,7 +54,6 @@ class LeaveRequestResource extends Resource
                     ->preload()
                     ->required(),
 
-
                 DatePicker::make('start_date')
                     ->label('Start Date')
                     ->required()
@@ -186,7 +185,7 @@ class LeaveRequestResource extends Resource
     {
         $query = parent::getEloquentQuery();
 
-        if (! auth()->user()->hasRole('admin')) {
+        if (! auth()->user()->hasRole('super_admin')) {
             $query->where('user_id', auth()->id());
         }
 
