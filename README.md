@@ -9,6 +9,9 @@
 ```php artisan migrate```
 #### Seed Database:
 ```php artisan db:seed```
+#### Storage Link:
+```php artisan storage:link``` <br/>
+- make sure to add the correct app url to your .env file
 ### Run the Application:
 ```php artisan serve```
 
