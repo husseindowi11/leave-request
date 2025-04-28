@@ -22,6 +22,12 @@ After seeding the database, you can access the application at the url shown in t
 > Email: employee@demo.com <br/>
 > Password: password
 
+## Packages Used:
+- [Laravel Filament](https://filamentphp.com/docs)
+- [Laravel Sluggable](https://github.com/spatie/laravel-sluggable)
+- [Filament Shield](https://filamentphp.com/plugins/bezhansalleh-shield#custom-navigation-group)
+### Why did I use filament?
+I chose Filament because it lets me focus on the real business logic—building the leave-request workflow, rather than rebuilding endless CRUD pages, forms, and tables from scratch. With Filament handling the UI, validation, and resource conventions out of the box, I can deliver functionality faster and more reliably, without reinventing the wheel.
 # Project Overview
 ### Dashboard Interface:
 ![Dashboard Screenshot](docs/images/dashboard.png)
@@ -57,3 +63,6 @@ The leave-request interface guides users through selecting who the request is fo
 ![Department Interface Screenshot](docs/images/roles-form.png)
 In Roles & Permissions screen, you get can control what each user can see and do.
 Just head to “Roles” in the sidebar, pick a role (like Super Admin or Employee), and you’ll find every section of your admin laid out in expandable panels—Departments, Employees, Widgets, and more. Flip the “Select All” switch to grant blanket access, or tick individual checkboxes (View, Create, Update, Delete) to give permissions to the smallest action. You can search, edit, or remove roles anytime, and every change takes effect instantly—no coding required. It’s a friendly, human-centered approach to making sure everyone on your team has just the right level of access.
+
+# Simple Demo:
+You can check a simple demo for this project on /docs/video.
