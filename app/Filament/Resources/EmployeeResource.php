@@ -51,6 +51,25 @@ class EmployeeResource extends Resource
                     ->tel()
                     ->nullable(),
 
+                TextInput::make('password')
+                    ->label('Password')
+                    ->password()
+                    ->required(fn($get) => $get('id') == null)
+                    ->dehydrated(fn($state) => !empty($state))
+                    ->confirmed()
+                    ->minLength(8)
+                    ->maxLength(255)
+                    ->visible(fn($get) => $get('id') == null),
+
+                TextInput::make('password_confirmation')
+                    ->label('Password Confirm')
+                    ->password()
+                    ->required(fn($get) => $get('id') == null)
+                    ->dehydrated(fn($state) => !empty($state))
+                    ->minLength(8)
+                    ->maxLength(255)
+                    ->visible(fn($get) => $get('id') == null),
+
                 Select::make('department_id')
                     ->label('Department')
                     ->relationship('department', 'name')
@@ -72,9 +91,13 @@ class EmployeeResource extends Resource
                     ->columns(2)
                     ->label('Assigned Roles'),
 
+
+
                 FileUpload::make('image')
                     ->label('Profile Image')
                     ->image()
+                    ->disk('public')
+                    ->directory('employees')
                     ->columnSpan(2)
                     ->nullable(),
             ]);
